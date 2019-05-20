@@ -14,7 +14,6 @@ range_query_by_value(items, 'price', 50, rounded=True) =>
 range_query_by_value(items, 'price', 100, rounded=False) =>
 => [{'value': '40-140', 'count': 2}, {'value': '140-240', 'count': 1}]
 """
-
 from collections import Counter
 
 

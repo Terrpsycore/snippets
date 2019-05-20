@@ -1,0 +1,64 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+Allows to format query data in pretty ranges and lists form to use it in templating later.
+
+items = [Item(price=40), Item(price=120), Item(price=200)]
+
+count_query_by_value(items, 'price') =>
+=> [{'value': 40, 'count': 1}, {'value': 120, 'count': 1}, {'value': 200, 'count': 1}]
+
+range_query_by_value(items, 'price', 50, rounded=True) =>
+=> [{'value': '0-50', 'count': 1}, {'value': '100-150', 'count': 1}, {'value': '200-250', 'count': 1}]
+
+range_query_by_value(items, 'price', 100, rounded=False) =>
+=> [{'value': '40-140', 'count': 2}, {'value': '140-240', 'count': 1}]
+"""
+
+from collections import Counter
+
+
+def count_query_by_value(query, value):
+    """ Count value frequency among specific query. """
+    value_list = Counter([getattr(q, value) for q in query])
+    result = [{'value':i[0], 'count':i[1]} for i in sorted(value_list.items())]
+    return result
+
+
+def range_query_by_value(query, value, step, rounded=False):
+    """ Return list of {'value': v, 'count': c} dicts,
+    representing 'query' 'value' ranges with maximum 'step' length. """
+    counted = count_query_by_value(query, value)
+
+    start = int(min(counted, key=lambda i: i['value'])['value'])
+    end = int(max(counted, key=lambda i: i['value'])['value'])
+    ranges = list_ranges(start, end, step, rounded)
+
+    ranged = [{'value': "{}-{}".format(r[0], r[-1]), 'count':0} for r in ranges]
+    for item in counted:
+        i = index_subseq_between(ranges, int(item['value']))
+        ranged[i]['count'] += 1
+    pure = list(filter(lambda x: x['count'], ranged))
+    return pure
+
+
+def list_ranges(start, end, step, rounded=False):
+    """ Return list of ranges from 'start' to 'end' with 'step' length.
+    If 'rounded' - ranges will be rounded to step value. """
+    if rounded:
+        start = (start // step) * step
+        end = (end // step + 1) * step
+    result = []
+    edge = start
+    while edge <= end:
+        following = min(edge+step-1, end)
+        result.append((edge, following+1))
+        edge = following + 1
+    return result
+
+
+def index_subseq_between(sequence, el):
+    """ Index which range within sequence 'el' belongs to. """
+    for subseq in sequence:
+        if el >= subseq[0] and el < subseq[-1]:
+            return sequence.index(subseq)

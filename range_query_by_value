@@ -58,7 +58,7 @@ def list_ranges(start, end, step, rounded=False):
 
 
 def index_subseq_between(sequence, el):
-    """ Index which range within sequence 'el' belongs to. """
+    """ Index which range within 'sequence' 'el' belongs to. """
     for subseq in sequence:
         if el >= subseq[0] and el < subseq[-1]:
             return sequence.index(subseq)

@@ -36,7 +36,7 @@ def range_query_by_value(query, value, step, rounded=False):
     ranged = [{'value': "{}-{}".format(r[0], r[-1]), 'count':0} for r in ranges]
     for item in counted:
         i = index_subseq_between(ranges, int(item['value']))
-        ranged[i]['count'] += 1
+        ranged[i]['count'] += item['count']
     pure = list(filter(lambda x: x['count'], ranged))
     return pure
 
@@ -49,10 +49,10 @@ def list_ranges(start, end, step, rounded=False):
         end = (end // step + 1) * step
     result = []
     edge = start
-    while edge <= end:
-        following = min(edge+step-1, end)
-        result.append((edge, following+1))
-        edge = following + 1
+    while edge < end:
+        following = edge+step
+        result.append((edge, following))
+        edge = following
     return result
 
 

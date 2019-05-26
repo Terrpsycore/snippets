@@ -13,9 +13,10 @@ get('User', 1) =>
 => query(User).get(1)
 
 create('User', name='Peter', age=20) =>
-=> User(name='Peter', age=20)
-=> session.add(instance)
+=> user = User(name='Peter', age=20)
+=> session.add(user)
 => session.commit()
+=> return user
 
 change(user, name='John', age=21) =>
 => user.name = 'John'

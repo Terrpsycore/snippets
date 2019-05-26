@@ -7,7 +7,7 @@ Main features are:
 - session auto-add, auto-commit
 - flex relation building for all relation field types
 
-models = [User, Post]
+models: User, Post
 
 get('User', 1) =>
 => query(User).get(1)

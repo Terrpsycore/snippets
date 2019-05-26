@@ -4,7 +4,7 @@
 Abstract methods focused on simplifying of SQLAlchemy access with SQLAlchemy.
 Main features are:
 - accessing to table models through string names instead of direct variables
-- auto-add, auto-commit
+- session auto-add, auto-commit
 - flex relation building for all relation field types
 
 models = [User, Post]

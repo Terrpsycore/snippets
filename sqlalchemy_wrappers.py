@@ -1,6 +1,41 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+Abstract methods focused on simplifying of SQLAlchemy access with SQLAlchemy.
+Main features are:
+- accessing to table models through string names instead of direct variables
+- auto-add, auto-commit
+- flex relation building for all relation field types
+
+models = [User, Post]
+
+get('User', 1) =>
+=> query(User).get(1)
+
+create('User', name='Peter', age=20) =>
+=> User(name='Peter', age=20)
+=> session.add(instance)
+=> session.commit()
+
+change(user, name='John', age=21) =>
+=> user.name = 'John'
+=> user.age = 21
+=> session.commit()
+
+relate(user, post, 'posts') =>
+=> user.posts.append(post)
+=> session.commit()
+
+relate(post, user, 'user') =>
+=> post.user = user
+=> session.commit()
+"""
 from collections.abc import Iterable
 
 import dbase.models as models
+
+
+session = models.session
 
 
 def get(model, id):

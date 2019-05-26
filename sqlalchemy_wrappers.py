@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-Abstract methods focused on simplifying of SQLAlchemy access with SQLAlchemy.
+Abstract methods focused on simplifying of database access with SQLAlchemy.
 Main features are:
 - accessing to table models through string names instead of direct variables
 - session auto-add, auto-commit
